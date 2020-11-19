@@ -28,7 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/btn_route_add_point"
+        android:id="@+id/btn_main_start_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/main_listview" />
 
     <Button
-        android:id="@+id/btn_route_cleart_route"
+        android:id="@+id/btn_main_create_route"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_main_start_route" />
 
     <Button
-        android:id="@+id/btn_route_save_route"
+        android:id="@+id/btn_main_go_to_compass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
