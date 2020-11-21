@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="56dp"
         android:layout_marginTop="84dp"
+        android:onClick="goToRoute"
         android:text="Create Route"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_main_start_route" />
@@ -53,6 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
         android:layout_marginEnd="56dp"
+        android:onClick="goToCompass"
         android:text="Go to Compass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_main_start_route" />
