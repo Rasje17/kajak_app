@@ -3,6 +3,8 @@ package com.example.kajakcompas;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +22,8 @@ public class RouteActivity extends AppCompatActivity {
     Button btn_undo;
     Button btn_clearRoute;
     Button btn_saveRoute;
+    ArrayAdapter<String> arrayAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,36 @@ public class RouteActivity extends AppCompatActivity {
         btn_clearRoute = findViewById(R.id.btn_route_clearroute);
         btn_saveRoute = findViewById(R.id.btn_route_saveroute);
 
-        for(int i = 0; i < 10; i++) {
+
+        btn_undo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeLastPoint();
+            }
+        });
+
+        btn_saveRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveRoute();
+            }
+        });
+
+        btn_clearRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearRoute();
+            }
+        });
+
+        btn_addPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPoint();
+            }
+        });
+
+        for(int i = 0; i < 2; i++) {
             currentRoute.add(new Coordinate((float)2.1, (float)1.2));
         }
 
@@ -46,7 +79,7 @@ public class RouteActivity extends AppCompatActivity {
             stringRoute.add(coord.getLatitude() + " " + coord.getLongitude());
         }
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        arrayAdapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_list_item_1,
                 stringRoute);
@@ -59,6 +92,9 @@ public class RouteActivity extends AppCompatActivity {
         float east = Float.valueOf(eastField.getText().toString());
         Coordinate coord = new Coordinate(north, east);
         currentRoute.add(coord);
+        Log.d("TAG", currentRoute.toString());
+        arrayAdapter.notifyDataSetChanged();
+
     }
 
     private void removeLastPoint() {

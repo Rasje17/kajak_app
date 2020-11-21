@@ -101,6 +101,7 @@
         android:layout_marginTop="32dp"
         android:text="Add Point"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/route_east_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/route_east_edittext"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
