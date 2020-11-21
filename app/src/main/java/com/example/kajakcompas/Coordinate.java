@@ -1,8 +1,8 @@
 package com.example.kajakcompas;
 
 public class Coordinate {
-    float latitude;
-    float longitude;
+    private float latitude;
+    private float longitude;
 
     public Coordinate(float latitude, float longitude) {
         this.latitude = latitude;

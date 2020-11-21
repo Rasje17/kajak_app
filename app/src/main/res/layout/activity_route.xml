@@ -41,18 +41,18 @@
         android:id="@+id/btn_route_clearroute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="32dp"
         android:text="Clear Route"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_route_addpoint" />
+        app:layout_constraintTop_toBottomOf="@+id/route_east_edittext" />
 
     <EditText
         android:id="@+id/route_north_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="North"
@@ -76,7 +76,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
@@ -87,7 +87,7 @@
         android:id="@+id/btn_route_saveroute"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="152dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="28dp"
         android:text="Save Route"
         app:layout_constraintStart_toStartOf="parent"
@@ -97,8 +97,10 @@
         android:id="@+id/btn_route_addpoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="244dp"
+        android:layout_marginTop="32dp"
         android:text="Add Point"
-        tools:layout_editor_absoluteX="151dp"
-        tools:layout_editor_absoluteY="512dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/route_east_edittext" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
