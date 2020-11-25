@@ -28,43 +28,27 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, routes);
 
         routeView.setAdapter(adapter);
-        if (getIntent().getExtras() != null) {
-            Route route = (Route) getIntent().getSerializableExtra("Route");
-            routes.add(route);
-            adapter.notifyDataSetChanged();
-        } else {
-            Log.d("TAG", "Main_OnCreate_Else");
-        }
         }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Log.d("INTENT", "onNewIntent()");
-        Route route = (Route) intent.getSerializableExtra("Route");
-        routes.add(route);
-        adapter.notifyDataSetChanged();
+    protected void onResume() {
+        super.onResume();
+        populateListView();
     }
 
-    public void goToCompass(View view){
+    private void goToCompass(View view){
         Intent intent = new Intent(this, CompassActivity.class);
         startActivity(intent);
     }
 
-    public void goToRoute(View view) {
+    private void goToRoute(View view) {
         Intent intent = new Intent(this, RouteActivity.class);
         startActivity(intent);
     }
 
-    public ArrayList<Route> getRoutes() {
-        return routes;
-    }
-
-    public void setRoutes(ArrayList<Route> routes) {
-        this.routes = routes;
-    }
-
-    public ArrayAdapter<Route> getAdapter() {
-        return adapter;
+    private void populateListView() {
+        RouteDB routeDB = RouteDB.getInstance(this);
+        routes = (ArrayList<Route>) routeDB.routeDao().getRoutes();
+        adapter.notifyDataSetChanged();
     }
 }

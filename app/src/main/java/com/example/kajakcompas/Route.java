@@ -3,12 +3,27 @@ package com.example.kajakcompas;
 import android.location.Location;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
+
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.ArrayList;
 
-public class Route implements Serializable {
+@Entity(tableName = "routes")
+public class Route{
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+    @ColumnInfo(name = "name")
     private String name;
+    @ColumnInfo(name = "coordinates")
     private ArrayList<Location> coordinates;
+
+    public Route(int id, String name, ArrayList<Location> coordinates) {
+        this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
+    }
 
     public Route(String name, ArrayList<Location> coordinates) {
         this.name = name;

@@ -117,9 +117,9 @@ public class RouteActivity extends AppCompatActivity {
 
     private void saveRoute() {
         Route route = new Route(nameField.getText().toString(), currentRoute);
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("Route", route);
-        startActivity(intent);
+
+        RouteDB routeDB = RouteDB.getInstance(this);
+        routeDB.routeDao().insertRoute(route);
     }
 
 
