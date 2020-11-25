@@ -22,8 +22,7 @@ public class RouteActivity extends AppCompatActivity {
     Button btn_undo;
     Button btn_clearRoute;
     Button btn_saveRoute;
-    ArrayAdapter<String> arrayAdapter;
-
+    ArrayAdapter<Coordinate> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +39,16 @@ public class RouteActivity extends AppCompatActivity {
         btn_clearRoute = findViewById(R.id.btn_route_clearroute);
         btn_saveRoute = findViewById(R.id.btn_route_saveroute);
 
+        nameField.setHint("Name");
+        northField.setHint("North");
+        eastField.setHint("East");
+
+        arrayAdapter = new ArrayAdapter<Coordinate>(
+                this,
+                android.R.layout.simple_list_item_1,
+                currentRoute);
+
+        listView.setAdapter(arrayAdapter);
 
         btn_undo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,24 +77,8 @@ public class RouteActivity extends AppCompatActivity {
                 addPoint();
             }
         });
-
-        for(int i = 0; i < 2; i++) {
-            currentRoute.add(new Coordinate((float)2.1, (float)1.2));
-        }
-
-        ArrayList<String> stringRoute = new ArrayList<>();
-
-        for (Coordinate coord : currentRoute) {
-            stringRoute.add(coord.getLatitude() + " " + coord.getLongitude());
-        }
-
-        arrayAdapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                stringRoute);
-
-        listView.setAdapter(arrayAdapter);
     }
+
 
     private void addPoint() {
         float north = Float.valueOf(northField.getText().toString());
@@ -94,15 +87,23 @@ public class RouteActivity extends AppCompatActivity {
         currentRoute.add(coord);
         Log.d("TAG", currentRoute.toString());
         arrayAdapter.notifyDataSetChanged();
+        northField.getText().clear();
+        eastField.getText().clear();
 
     }
 
     private void removeLastPoint() {
-        currentRoute.remove(currentRoute.size() -1);
+        if(currentRoute.size() -1 != -1) {
+            currentRoute.remove(currentRoute.size() -1);
+            arrayAdapter.notifyDataSetChanged();
+        }
+
+
     }
 
     private void clearRoute() {
         currentRoute.clear();
+        arrayAdapter.notifyDataSetChanged();
     }
 
     private void saveRoute() {
