@@ -2,10 +2,11 @@ package com.example.kajakcompas;
 
 import android.location.Location;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Route {
+public class Route implements Serializable {
     private String name;
     private ArrayList<Location> coordinates;
 

@@ -2,6 +2,7 @@ package com.example.kajakcompas;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+
+import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 public class RouteActivity extends AppCompatActivity {
     ArrayList<Location> currentRoute;
@@ -24,7 +27,6 @@ public class RouteActivity extends AppCompatActivity {
     Button btn_clearRoute;
     Button btn_saveRoute;
     ArrayAdapter<String> arrayAdapter;
-    MainActivity main;
     ArrayList<String> stringRoute;
 
     @Override
@@ -42,7 +44,6 @@ public class RouteActivity extends AppCompatActivity {
         btn_clearRoute = findViewById(R.id.btn_route_clearroute);
         btn_saveRoute = findViewById(R.id.btn_route_saveroute);
         stringRoute = new ArrayList<String>();
-        main = new MainActivity();
 
         nameField.setHint("Name");
         latField.setHint("Latitude");
@@ -82,14 +83,13 @@ public class RouteActivity extends AppCompatActivity {
                 addPoint();
             }
         });
-    }
 
+    }
 
     private void addPoint() {
         float lat = Float.valueOf(latField.getText().toString());
         float _long = Float.valueOf(longField.getText().toString());
 
-        //TODO: Create location object
         Location location = new Location("");
         location.setLatitude(lat);
         location.setLongitude(_long);
@@ -99,7 +99,6 @@ public class RouteActivity extends AppCompatActivity {
         arrayAdapter.notifyDataSetChanged();
         latField.getText().clear();
         longField.getText().clear();
-
     }
 
     private void removeLastPoint() {
@@ -108,7 +107,6 @@ public class RouteActivity extends AppCompatActivity {
             stringRoute.remove(stringRoute.size() -1);
             arrayAdapter.notifyDataSetChanged();
         }
-
     }
 
     private void clearRoute() {
@@ -119,9 +117,9 @@ public class RouteActivity extends AppCompatActivity {
 
     private void saveRoute() {
         Route route = new Route(nameField.getText().toString(), currentRoute);
-        main.getRoutes().add(route);
-        main.getAdapter().notifyDataSetChanged();
-
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("Route", route);
+        startActivity(intent);
     }
 
 
