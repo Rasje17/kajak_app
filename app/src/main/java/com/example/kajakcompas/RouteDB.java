@@ -2,9 +2,14 @@ package com.example.kajakcompas;
 
 import android.content.Context;
 
+import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
+@Database(entities = Route.class, version = 1)
+@TypeConverters({Converters.class})
 public abstract class RouteDB extends RoomDatabase {
     private static final String DB_NAME = "route_db";
     private static RouteDB instance;

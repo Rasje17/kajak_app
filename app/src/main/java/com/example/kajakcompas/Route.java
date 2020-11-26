@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -19,10 +20,12 @@ public class Route{
     @ColumnInfo(name = "coordinates")
     private ArrayList<Location> coordinates;
 
-    public Route(int id, String name, ArrayList<Location> coordinates) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
         this.id = id;
-        this.name = name;
-        this.coordinates = coordinates;
     }
 
     public Route(String name, ArrayList<Location> coordinates) {
