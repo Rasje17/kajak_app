@@ -19,7 +19,7 @@ public interface RouteDao {
     @Query("SELECT * FROM routes")
     List<Route> getRoutes();
     @Insert
-    void insertRoute(Route route);
+    void insertRoute(Route... routes);
     @Delete
     void deleteRoute(Route route);
 }
