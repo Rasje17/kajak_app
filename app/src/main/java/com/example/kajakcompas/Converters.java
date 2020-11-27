@@ -13,18 +13,18 @@ import java.util.ArrayList;
 
 public class Converters {
     @TypeConverter
-    public static Route fromString(String value) {
-        Type type = new TypeToken<Route>(){}.getType();
-        Gson gson = new Gson().fromJson(value, type);
+    public static ArrayList<Location> fromString(String value) {
+        Type listType = new TypeToken<ArrayList<Location>>(){}.getType();
+        Gson gson = new Gson().fromJson(value, listType);
         Log.d("Converter", gson.toString());
-        return new Gson().fromJson(value, type);
+        return new Gson().fromJson(value, listType);
     }
     @TypeConverter
-    public static String fromArrayList(Route route) {
-        Type listType = new TypeToken<Route>(){}.getType();
+    public static String fromArrayList(ArrayList<Location> list) {
+        Type listType = new TypeToken<ArrayList<Location>>(){}.getType();
         Gson gson = new Gson();
-        Log.d("Converter", "" + route);
-        String json = gson.toJson(route, listType);
+        Log.d("Converter", "" + list);
+        String json = gson.toJson(list, listType);
         Log.d("Converter", "" + json);
         return json;
     }
