@@ -76,9 +76,16 @@ public class MainActivity extends AppCompatActivity {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                routes = (ArrayList<Route>) routeDB.routeDao().getRoutes();
+                routes.clear();
+                routes.addAll(routeDB.routeDao().getRoutes());
+                Log.d("routes", routes.get(0).getName());
             }
         });
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         adapter.notifyDataSetChanged();
     }
 

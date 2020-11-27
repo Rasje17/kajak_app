@@ -55,5 +55,10 @@ public class Route{
     public void setCoordinates(ArrayList<Coordinate> coordinates) {
         this.coordinates = coordinates;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
 
