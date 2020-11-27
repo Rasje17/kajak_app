@@ -13,15 +13,15 @@ import java.util.ArrayList;
 
 public class Converters {
     @TypeConverter
-    public static ArrayList<Location> fromString(String value) {
-        Type listType = new TypeToken<ArrayList<Location>>(){}.getType();
+    public static ArrayList<Coordinate> fromString(String value) {
+        Type listType = new TypeToken<ArrayList<Coordinate>>(){}.getType();
         Gson gson = new Gson().fromJson(value, listType);
         Log.d("Converter", gson.toString());
         return new Gson().fromJson(value, listType);
     }
     @TypeConverter
-    public static String fromArrayList(ArrayList<Location> list) {
-        Type listType = new TypeToken<ArrayList<Location>>(){}.getType();
+    public static String fromArrayList(ArrayList<Coordinate> list) {
+        Type listType = new TypeToken<ArrayList<Coordinate>>(){}.getType();
         Gson gson = new Gson();
         Log.d("Converter", "" + list);
         String json = gson.toJson(list, listType);

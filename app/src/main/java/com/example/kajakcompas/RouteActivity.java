@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 public class RouteActivity extends AppCompatActivity {
-    ArrayList<Location> currentRoute;
+    ArrayList<Coordinate> currentRoute;
     ListView listView;
     EditText nameField;
     EditText latField;
@@ -93,12 +93,10 @@ public class RouteActivity extends AppCompatActivity {
         float lat = Float.valueOf(latField.getText().toString());
         float _long = Float.valueOf(longField.getText().toString());
 
-        Location location = new Location("");
-        location.setLatitude(lat);
-        location.setLongitude(_long);
-        currentRoute.add(location);
+        Coordinate coordinate = new Coordinate(lat, _long);
+        currentRoute.add(coordinate);
 
-        stringRoute.add(location.getLatitude() + " " + location.getLongitude());
+        stringRoute.add(lat + " " + _long);
         arrayAdapter.notifyDataSetChanged();
         latField.getText().clear();
         longField.getText().clear();

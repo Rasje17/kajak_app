@@ -1,5 +1,7 @@
 package com.example.kajakcompas;
 
+import androidx.room.TypeConverters;
+
 public class Coordinate {
     private float latitude;
     private float longitude;
