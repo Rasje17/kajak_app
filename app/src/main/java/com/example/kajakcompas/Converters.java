@@ -15,7 +15,7 @@ public class Converters {
     @TypeConverter
     public static ArrayList<Coordinate> fromString(String value) {
         Type listType = new TypeToken<ArrayList<Coordinate>>(){}.getType();
-        Gson gson = new Gson().fromJson(value, listType);
+        Gson gson = new Gson();
         Log.d("Converter", gson.toString());
         return new Gson().fromJson(value, listType);
     }

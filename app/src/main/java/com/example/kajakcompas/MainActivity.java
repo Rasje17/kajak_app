@@ -77,8 +77,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 routes = (ArrayList<Route>) routeDB.routeDao().getRoutes();
-                adapter.notifyDataSetChanged();
             }
         });
+        adapter.notifyDataSetChanged();
     }
+
 }
