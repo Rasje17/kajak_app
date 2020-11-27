@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.JsonWriter;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -123,7 +126,7 @@ public class RouteActivity extends AppCompatActivity {
             @Override
             public void run() {
                 routeDB.routeDao().insertRoute(route);
-                Log.d("TAG", "run()");
+
             }
         });
 

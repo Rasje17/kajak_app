@@ -9,14 +9,19 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 @Entity(tableName = "routes")
 public class Route{
+    @SerializedName("id")
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @SerializedName("name")
     @ColumnInfo(name = "name")
     private String name;
+    @SerializedName("coordinates")
     @ColumnInfo(name = "coordinates")
     private ArrayList<Location> coordinates;
 

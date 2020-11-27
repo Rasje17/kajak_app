@@ -72,9 +72,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-
-        RouteDB routeDB = RouteDB.getInstance(this);
-        routes = (ArrayList<Route>) routeDB.routeDao().getRoutes();
-        adapter.notifyDataSetChanged();
+        final RouteDB routeDB = RouteDB.getInstance(this);
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                routes = (ArrayList<Route>) routeDB.routeDao().getRoutes();
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 }

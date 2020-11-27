@@ -1,6 +1,7 @@
 package com.example.kajakcompas;
 
 import android.location.Location;
+import android.util.Log;
 
 import androidx.room.TypeConverter;
 
@@ -12,14 +13,19 @@ import java.util.ArrayList;
 
 public class Converters {
     @TypeConverter
-    public static ArrayList<Location> fromString(String value) {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        return new Gson().fromJson(value, listType);
+    public static Route fromString(String value) {
+        Type type = new TypeToken<Route>(){}.getType();
+        Gson gson = new Gson().fromJson(value, type);
+        Log.d("Converter", gson.toString());
+        return new Gson().fromJson(value, type);
     }
     @TypeConverter
-    public static String fromArrayList(ArrayList<Location> list) {
+    public static String fromArrayList(Route route) {
+        Type listType = new TypeToken<Route>(){}.getType();
         Gson gson = new Gson();
-        String json = gson.toJson(list);
+        Log.d("Converter", "" + route);
+        String json = gson.toJson(route, listType);
+        Log.d("Converter", "" + json);
         return json;
     }
 }
