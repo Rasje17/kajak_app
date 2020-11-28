@@ -1,7 +1,5 @@
 package com.example.kajakcompas;
 
-import androidx.room.TypeConverters;
-
 import java.io.Serializable;
 
 public class Coordinate implements Serializable {
@@ -22,16 +20,9 @@ public class Coordinate implements Serializable {
         return latitude;
     }
 
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
-
     public float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
-    }
 }
 

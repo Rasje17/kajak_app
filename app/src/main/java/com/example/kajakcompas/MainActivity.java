@@ -20,14 +20,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Route> routes = new ArrayList<>();
     private ArrayAdapter<Route> adapter;
+
     private ListView routeView;
     private ImageView refresh;
     private Button btn_Compass;
     private Button btn_Route;
     private Button btn_Start;
+    private Button btn_delete;
+
     private int selectedIndex;
     private int oldIndex;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
         btn_Compass = findViewById(R.id.btn_main_go_to_compass);
         btn_Route = findViewById(R.id.btn_main_create_route);
         btn_Start = findViewById(R.id.btn_main_start_route);
+        btn_delete = findViewById(R.id.btn_main_delete_route);
+
         routeView = (ListView) findViewById(R.id.main_listview);
         refresh = findViewById(R.id.main_list_imageview);
 
@@ -65,6 +69,12 @@ public class MainActivity extends AppCompatActivity {
                 startRoute();
             }
         });
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteRoute();
+            }
+        });
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, routes);
 
@@ -79,12 +89,9 @@ public class MainActivity extends AppCompatActivity {
                 selectedIndex = position;
                 parent.getChildAt(selectedIndex).setBackgroundColor(Color.parseColor("#919294"));
                 oldIndex = selectedIndex;
-
-
             }
         });
     }
-
 
     private void startRoute() {
         Route selectedRoute = (Route) routeView.getItemAtPosition(selectedIndex);
@@ -112,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 routes.clear();
                 routes.addAll(routeDB.routeDao().getRoutes());
-                Log.d("routes", routes.get(0).getName());
             }
         });
         try {
@@ -120,10 +126,20 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if (!routes.isEmpty()) {
-            adapter.notifyDataSetChanged();
-        }
-
+        adapter.notifyDataSetChanged();
     }
 
+    private void deleteRoute() {
+        final RouteDB routeDB = RouteDB.getInstance(this);
+        final Route routeToBeDeleted = (Route) routeView.getItemAtPosition(selectedIndex);
+        if(routeToBeDeleted != null) {
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    routeDB.routeDao().deleteRoute(routeToBeDeleted);
+                    populateListView();
+                }
+            });
+        }
+    }
 }

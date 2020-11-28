@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+//Credit: https://github.com/ashishrawat2911/RoomDemo/blob/master/app/src/main/java/com/ashish/roomdemo/database/AppExecutors.java
 public class AppExecutors {
 
     private static final Object LOCK = new Object();

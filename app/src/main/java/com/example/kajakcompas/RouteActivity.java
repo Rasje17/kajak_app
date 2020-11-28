@@ -1,23 +1,13 @@
 package com.example.kajakcompas;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.JsonWriter;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-
-import com.google.gson.Gson;
-
+import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
-
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 public class RouteActivity extends AppCompatActivity {
     ArrayList<Coordinate> currentRoute;
@@ -127,9 +117,9 @@ public class RouteActivity extends AppCompatActivity {
                     routeDB.routeDao().insertRoute(route);
                 }
             });
+            latField.getText().clear();
+            longField.getText().clear();
+            nameField.getText().clear();
         }
-
     }
-
-
 }
