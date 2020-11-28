@@ -68,7 +68,7 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
 
         // check if we need location functionality
-        if (currentRoute != null && currentRoute.getCoordinates().size() < 0 ) {
+        if (currentRoute != null && currentRoute.getCoordinates().size() > 0 ) {
             //setup route handling
             route_enabled = true;
 
@@ -209,7 +209,7 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private void update_compas_and_direction_orientation() {
         // set the correct orientation of compas image
         compasrose.setRotation(convertToDegrees(orientationAngles[0]));
-        Log.d("azimut", String.valueOf(convertToDegrees(orientationAngles[0])));
+        //Log.d("azimut", String.valueOf(convertToDegrees(orientationAngles[0])));
 
         //change the direction arrow to allign with new compas alignment
         direction.setRotation(convertToDegrees(orientationAngles[0]) + direction_angle);
@@ -219,7 +219,7 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         int distance = distance_to_curent_goal;
 
         //distance between all Coordinate remaining in Route
-        for (int i=curentRoute_subgoal_index; i<currentRoute.getCoordinates().size();i++){
+        for (int i=curentRoute_subgoal_index; i<currentRoute.getCoordinates().size()-1;i++){
 
             Location firstLocation = new Location("");
             firstLocation.setLatitude(currentRoute.getCoordinates().get(i).getLatitude());
