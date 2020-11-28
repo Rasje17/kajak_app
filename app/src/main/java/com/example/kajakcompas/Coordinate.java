@@ -2,7 +2,9 @@ package com.example.kajakcompas;
 
 import androidx.room.TypeConverters;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable {
     private float latitude;
     private float longitude;
 

@@ -35,6 +35,8 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
     float direction_angle = 0;
 
+    Route currentRoute;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         //getting the compas image vev on the activity
         compasrose = findViewById(R.id.compas_iw);
         direction = findViewById(R.id.direction);
+        currentRoute = (Route) getIntent().getExtras().getSerializable("route");
+        Log.d("COMPASS", currentRoute.getName());
 
         //getting access to sensor manager
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);

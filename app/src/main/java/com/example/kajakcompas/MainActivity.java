@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_Compass;
     private Button btn_Route;
     private Button btn_Start;
+    private int selectedIndex;
 
 
 
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         btn_Start = findViewById(R.id.btn_main_start_route);
         routeView = (ListView) findViewById(R.id.main_listview);
         refresh = findViewById(R.id.main_list_imageview);
+
+
 
         btn_Route.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,11 +59,31 @@ public class MainActivity extends AppCompatActivity {
                 populateListView();
             }
         });
+        btn_Start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startRoute();
+            }
+        });
 
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, routes);
 
         routeView.setAdapter(adapter);
-        }
+        routeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedIndex = position;
+            }
+        });
+    }
+
+
+    private void startRoute() {
+        Route selectedRoute = (Route) routeView.getItemAtPosition(selectedIndex);
+        Intent intent = new Intent(this, CompassActivity.class);
+        intent.putExtra("route", selectedRoute);
+        startActivity(intent);
+    }
 
     private void goToCompass(){
         Intent intent = new Intent(this, CompassActivity.class);

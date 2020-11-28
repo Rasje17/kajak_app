@@ -1,6 +1,7 @@
 package com.example.kajakcompas;
 
 import android.location.Location;
+import android.os.Parcelable;
 
 import java.io.Serializable;
 
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 
 @Entity(tableName = "routes")
 
-public class Route{
+public class Route implements Serializable {
     @SerializedName("id")
     @PrimaryKey(autoGenerate = true)
     private int id;
