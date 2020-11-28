@@ -117,17 +117,18 @@ public class RouteActivity extends AppCompatActivity {
     }
 
     private void saveRoute() {
-        final Route route = new Route(nameField.getText().toString(), currentRoute);
+        if(currentRoute.size() > 0 ) {
+            final Route route = new Route(nameField.getText().toString(), currentRoute);
+            final RouteDB routeDB = RouteDB.getInstance(this);
 
-        final RouteDB routeDB = RouteDB.getInstance(this);
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
-            @Override
-            public void run() {
-                routeDB.routeDao().insertRoute(route);
-
-            }
-        });
-
+            AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                @Override
+                public void run() {
+                    routeDB.routeDao().insertRoute(route);
+                }
+            });
+        }
+        
     }
 
 
