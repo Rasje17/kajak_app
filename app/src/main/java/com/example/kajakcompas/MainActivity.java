@@ -3,6 +3,7 @@ package com.example.kajakcompas;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn_Route;
     private Button btn_Start;
     private int selectedIndex;
+    private int oldIndex;
 
 
 
@@ -72,7 +74,15 @@ public class MainActivity extends AppCompatActivity {
         routeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(parent.getChildAt(oldIndex) != null) {
+                    parent.getChildAt(oldIndex).setBackgroundColor(Color.WHITE);
+                }
+
                 selectedIndex = position;
+                parent.getChildAt(selectedIndex).setBackgroundColor(Color.parseColor("#919294"));
+                oldIndex = selectedIndex;
+
+
             }
         });
     }
