@@ -38,6 +38,7 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     boolean route_enabled;
 
     private long timestamp = 0;
+    private Coordinate ref;
 
     ImageView compasrose;
     ImageView direction;
@@ -237,19 +238,19 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     }
 
     private void update_direction_angle(Location currentLocation) {
-
+    ref = currentRoute.getCoordinates().get(curentRoute_subgoal_index);
     Location curent_goal_loc = new Location("");
-    curent_goal_loc.setLatitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLatitude());
-    curent_goal_loc.setLongitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLongitude());
+    curent_goal_loc.setLatitude(ref.getLatitude());
+    curent_goal_loc.setLongitude(ref.getLongitude());
     direction_angle = currentLocation.bearingTo(curent_goal_loc);
     }
 
     private void check_for_goal(Location currentLocation) {
-
+        ref = currentRoute.getCoordinates().get(curentRoute_subgoal_index);
         //distance from curent pos to current goal
         Location curent_goal_loc = new Location("");
-        curent_goal_loc.setLatitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLatitude());
-        curent_goal_loc.setLongitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLongitude());
+        curent_goal_loc.setLatitude(ref.getLatitude());
+        curent_goal_loc.setLongitude(ref.getLongitude());
 
         distance_to_curent_goal = (int) currentLocation.distanceTo(curent_goal_loc);
 
@@ -259,10 +260,11 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
               distance_text.setTextColor(Color.GREEN);
            }else{
                curentRoute_subgoal_index++;
+               ref = currentRoute.getCoordinates().get(curentRoute_subgoal_index);
 
                curent_goal_loc = new Location("");
-               curent_goal_loc.setLatitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLatitude());
-               curent_goal_loc.setLongitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLongitude());
+               curent_goal_loc.setLatitude(ref.getLatitude());
+               curent_goal_loc.setLongitude(ref.getLongitude());
 
                distance_to_curent_goal = (int) currentLocation.distanceTo(curent_goal_loc);
 
