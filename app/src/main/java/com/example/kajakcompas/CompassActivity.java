@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,6 +18,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompassActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
     private SensorManager sensorManager;
@@ -27,9 +32,17 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private final float[] rotationMatrix = new float[9];
     private final float[] orientationAngles = new float[3];
 
+    int curentRoute_subgoal_index = 0;
+    int distance_to_curent_goal;
+
+    boolean route_enabled;
+
     private long timestamp = 0;
+
     ImageView compasrose;
     ImageView direction;
+    TextView distance_text;
+
     long gpsMinTimeMS = 1000;
     float gpsMinDistanceM = 10;
 
@@ -46,26 +59,47 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         //getting the compas image vev on the activity
         compasrose = findViewById(R.id.compas_iw);
         direction = findViewById(R.id.direction);
-        if(getIntent() != null) {
+        distance_text = findViewById(R.id.distance_to_goal);
+        if(getIntent().getExtras() != null) {
             currentRoute = (Route) getIntent().getExtras().getSerializable("route");
             Log.d("COMPASS", currentRoute.getName());
         }
 
 
+        // check if we need location functionality
+        if (currentRoute != null && currentRoute.getCoordinates().size() < 0 ) {
+            //setup route handling
+            route_enabled = true;
+
+
+
+            // setup location handling
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMS, gpsMinDistanceM, this);
+
+
+
+
+        } else {
+            route_enabled = false;
+            distance_text.setText("Compass");
+        }
+
         //getting access to sensor manager
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMS, gpsMinDistanceM, this);
+
+
+
     }
 
     @Override
@@ -137,10 +171,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
 
         update_compas_and_direction_orientation();
-
-
-
-
     }
 
 
@@ -184,16 +214,61 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         direction.setRotation(convertToDegrees(orientationAngles[0]) + direction_angle);
     }
 
-    private void update_finalgoal_distance(Location location) {
-        //sum distance between curent location and next route lokation + nrext rout0 til route-1... to goal
+    private void update_finalgoal_distance(Location currentLocation) {
+        int distance = distance_to_curent_goal;
+
+        //distance between all Coordinate remaining in Route
+        for (int i=curentRoute_subgoal_index; i<currentRoute.getCoordinates().size();i++){
+
+            Location firstLocation = new Location("");
+            firstLocation.setLatitude(currentRoute.getCoordinates().get(i).getLatitude());
+            firstLocation.setLongitude(currentRoute.getCoordinates().get(i).getLongitude());
+
+            Location secondLocation = new Location("");
+            secondLocation.setLatitude(currentRoute.getCoordinates().get(i+1).getLatitude());
+            secondLocation.setLongitude(currentRoute.getCoordinates().get(i+1).getLongitude());
+
+            distance += firstLocation.distanceTo(secondLocation);
+        }
+
+
+        // vrite to screen
+       distance_text.setText(distance +" m");
     }
 
-    private void update_direction_angle(Location location) {
-        //calculate angle from curent location to next route location
+    private void update_direction_angle(Location currentLocation) {
+
+    Location curent_goal_loc = new Location("");
+    curent_goal_loc.setLatitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLatitude());
+    curent_goal_loc.setLongitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLongitude());
+    direction_angle = currentLocation.bearingTo(curent_goal_loc);
     }
 
-    private void check_for_goal(Location location) {
-        //calculate if curent location is within threshold of next rout location if so check if goal if not cange next rout location to routlocation -1
+    private void check_for_goal(Location currentLocation) {
+
+        //distance from curent pos to current goal
+        Location curent_goal_loc = new Location("");
+        curent_goal_loc.setLatitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLatitude());
+        curent_goal_loc.setLongitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLongitude());
+
+        distance_to_curent_goal = (int) currentLocation.distanceTo(curent_goal_loc);
+
+       if(distance_to_curent_goal<25){
+           if(curentRoute_subgoal_index == currentRoute.getCoordinates().size()-1){
+              distance_text.setText("Goal Reached");
+              distance_text.setTextColor(Color.GREEN);
+           }else{
+               curentRoute_subgoal_index++;
+
+               curent_goal_loc = new Location("");
+               curent_goal_loc.setLatitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLatitude());
+               curent_goal_loc.setLongitude(currentRoute.getCoordinates().get(curentRoute_subgoal_index).getLongitude());
+
+               distance_to_curent_goal = (int) currentLocation.distanceTo(curent_goal_loc);
+
+           }
+
+       }
     }
 
     private float convertToDegrees(float radiansAngle){
