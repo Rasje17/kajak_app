@@ -46,8 +46,11 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
         //getting the compas image vev on the activity
         compasrose = findViewById(R.id.compas_iw);
         direction = findViewById(R.id.direction);
-        currentRoute = (Route) getIntent().getExtras().getSerializable("route");
-        Log.d("COMPASS", currentRoute.getName());
+        if(getIntent() != null) {
+            currentRoute = (Route) getIntent().getExtras().getSerializable("route");
+            Log.d("COMPASS", currentRoute.getName());
+        }
+
 
         //getting access to sensor manager
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
