@@ -72,8 +72,6 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
             //setup route handling
             route_enabled = true;
 
-
-
             // setup location handling
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if(ActivityCompat.checkSelfPermission(CompassActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

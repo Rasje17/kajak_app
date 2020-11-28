@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
     private int oldIndex;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         btn_Start = findViewById(R.id.btn_main_start_route);
         routeView = (ListView) findViewById(R.id.main_listview);
         refresh = findViewById(R.id.main_list_imageview);
-
 
 
         btn_Route.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         routeView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(parent.getChildAt(oldIndex) != null) {
+                if (parent.getChildAt(oldIndex) != null) {
                     parent.getChildAt(oldIndex).setBackgroundColor(Color.WHITE);
                 }
 
@@ -90,12 +88,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void startRoute() {
         Route selectedRoute = (Route) routeView.getItemAtPosition(selectedIndex);
-        Intent intent = new Intent(this, CompassActivity.class);
-        intent.putExtra("route", selectedRoute);
-        startActivity(intent);
+        if (selectedRoute != null) {
+            Intent intent = new Intent(this, CompassActivity.class);
+            intent.putExtra("route", selectedRoute);
+            startActivity(intent);
+        }
     }
 
-    private void goToCompass(){
+    private void goToCompass() {
         Intent intent = new Intent(this, CompassActivity.class);
         startActivity(intent);
     }
@@ -120,7 +120,10 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        adapter.notifyDataSetChanged();
+        if (!routes.isEmpty()) {
+            adapter.notifyDataSetChanged();
+        }
+
     }
 
 }
