@@ -137,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     routeDB.routeDao().deleteRoute(routeToBeDeleted);
-                    populateListView();
                 }
             });
         }
+        populateListView();
     }
 }

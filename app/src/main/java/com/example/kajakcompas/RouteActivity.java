@@ -19,8 +19,7 @@ public class RouteActivity extends AppCompatActivity {
     Button btn_undo;
     Button btn_clearRoute;
     Button btn_saveRoute;
-    ArrayAdapter<String> arrayAdapter;
-    ArrayList<String> stringRoute;
+    ArrayAdapter<Coordinate> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +35,15 @@ public class RouteActivity extends AppCompatActivity {
         btn_undo = findViewById(R.id.btn_route_undo);
         btn_clearRoute = findViewById(R.id.btn_route_clearroute);
         btn_saveRoute = findViewById(R.id.btn_route_saveroute);
-        stringRoute = new ArrayList<String>();
 
         nameField.setHint("Name");
         latField.setHint("Latitude");
         longField.setHint("Longitude");
 
-        arrayAdapter = new ArrayAdapter<String>(
+        arrayAdapter = new ArrayAdapter<Coordinate>(
                 this,
                 android.R.layout.simple_list_item_1,
-                stringRoute);
+                currentRoute);
 
         listView.setAdapter(arrayAdapter);
 
@@ -85,8 +83,6 @@ public class RouteActivity extends AppCompatActivity {
 
         Coordinate coordinate = new Coordinate(lat, _long);
         currentRoute.add(coordinate);
-
-        stringRoute.add(lat + " " + _long);
         arrayAdapter.notifyDataSetChanged();
         latField.getText().clear();
         longField.getText().clear();
@@ -95,14 +91,12 @@ public class RouteActivity extends AppCompatActivity {
     private void removeLastPoint() {
         if(!currentRoute.isEmpty()) {
             currentRoute.remove(currentRoute.size() -1);
-            stringRoute.remove(stringRoute.size() -1);
             arrayAdapter.notifyDataSetChanged();
         }
     }
 
     private void clearRoute() {
         currentRoute.clear();
-        stringRoute.clear();
         arrayAdapter.notifyDataSetChanged();
     }
 

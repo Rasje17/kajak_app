@@ -26,6 +26,10 @@ public class Route implements Serializable {
     @ColumnInfo(name = "name")
     private String name;
 
+    public String getName() {
+        return name;
+    }
+
     @SerializedName("coordinates")
     @ColumnInfo(name = "coordinates")
     private ArrayList<Coordinate> coordinates;
@@ -42,6 +46,19 @@ public class Route implements Serializable {
     public void setCoordinates(ArrayList<Coordinate> coordinates) {
         this.coordinates = coordinates;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
     @Override
     public String toString() {
