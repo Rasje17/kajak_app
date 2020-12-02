@@ -46,6 +46,9 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
     Route currentRoute;
 
+    private int acceptible_goal_proximity = 200;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,13 +187,13 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private void check_for_goal(Location currentLocation) {
         ref = currentRoute.getCoordinates().get(currentRoute_subGoal_index);
 
-        Location curent_goal_loc = new Location("");
-        curent_goal_loc.setLatitude(ref.getLatitude());
-        curent_goal_loc.setLongitude(ref.getLongitude());
+        Location current_goal_loc = new Location("");
+        current_goal_loc.setLatitude(ref.getLatitude());
+        current_goal_loc.setLongitude(ref.getLongitude());
 
-        distance_to_current_goal = (int) currentLocation.distanceTo(curent_goal_loc);
+        distance_to_current_goal = (int) currentLocation.distanceTo(current_goal_loc);
 
-       if(distance_to_current_goal <25){
+       if(distance_to_current_goal < acceptible_goal_proximity){
            if(currentRoute_subGoal_index == currentRoute.getCoordinates().size()-1){
               distance_text.setText("Goal Reached");
               distance_text.setTextColor(Color.GREEN);
@@ -198,11 +201,11 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
                currentRoute_subGoal_index++;
                ref = currentRoute.getCoordinates().get(currentRoute_subGoal_index);
 
-               curent_goal_loc = new Location("");
-               curent_goal_loc.setLatitude(ref.getLatitude());
-               curent_goal_loc.setLongitude(ref.getLongitude());
+               current_goal_loc = new Location("");
+               current_goal_loc.setLatitude(ref.getLatitude());
+               current_goal_loc.setLongitude(ref.getLongitude());
 
-               distance_to_current_goal = (int) currentLocation.distanceTo(curent_goal_loc);
+               distance_to_current_goal = (int) currentLocation.distanceTo(current_goal_loc);
            }
        }
     }
