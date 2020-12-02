@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private SensorManager sensorManager;
     private LocationManager locationManager;
     private BroadcastReceiver batteryReciver;
+    private LocationListener loclist = this;
 
     private final float[] accelerometerReading = new float[3];
     private final float[] magnetometerReading = new float[3];
@@ -44,7 +46,8 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     ImageView direction;
     TextView distance_text;
 
-    long gpsMinTimeMS = 1000;
+    long gpsMinTimeMSNormal = 1000;
+    long gpsMinTimeMSLowBattery = 30000;
     float gpsMinDistanceM = 10;
     float direction_angle = 0;
 
@@ -73,11 +76,11 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if(ActivityCompat.checkSelfPermission(CompassActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMS, gpsMinDistanceM, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMSNormal, gpsMinDistanceM, this);
             } else {
                 ActivityCompat.requestPermissions(CompassActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
             }
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMS, gpsMinDistanceM, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMSNormal, gpsMinDistanceM, this);
         } else {
             route_enabled = false;
             distance_text.setText("Compass");
@@ -228,11 +231,16 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
     private class BateteryBrodcastReciver extends BroadcastReceiver{
 
+        @SuppressLint("MissingPermission")
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction()==Intent.ACTION_BATTERY_LOW){
+                locationManager.removeUpdates(loclist);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMSLowBattery, gpsMinDistanceM, loclist);
                 Log.d("battery", "Battery LOW");
             }else if(intent.getAction()==Intent.ACTION_BATTERY_OKAY){
+                locationManager.removeUpdates(loclist);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, gpsMinTimeMSNormal, gpsMinDistanceM, loclist);
                 Log.d("battery", "Battery OKAY");
             }else{
                 Log.d("battery", "No intent matched intent was: "+intent.getType());
