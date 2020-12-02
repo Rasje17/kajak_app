@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -22,6 +25,7 @@ import android.widget.TextView;
 public class CompassActivity extends AppCompatActivity implements SensorEventListener, LocationListener {
     private SensorManager sensorManager;
     private LocationManager locationManager;
+    private BroadcastReceiver batteryReciver;
 
     private final float[] accelerometerReading = new float[3];
     private final float[] magnetometerReading = new float[3];
@@ -53,6 +57,8 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
+
+        batteryReciver = new BateteryBrodcastReciver();
 
         compassRose = findViewById(R.id.compas_iw);
         direction = findViewById(R.id.direction);
@@ -96,10 +102,15 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
             sensorManager.registerListener(this, magneticField,
                     SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
         }
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_BATTERY_OKAY);
+        intentFilter.addAction(Intent.ACTION_BATTERY_LOW);
+        registerReceiver(batteryReciver, intentFilter);
     }
 
     @Override
     protected void onPause() {
+        unregisterReceiver(batteryReciver);
         super.onPause();
 
         sensorManager.unregisterListener(this);
@@ -213,5 +224,20 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     private float convertToDegrees(float radiansAngle){
         float degreeangle = (float) (radiansAngle*(180/Math.PI));
         return degreeangle;
+    }
+
+    private class BateteryBrodcastReciver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction()==Intent.ACTION_BATTERY_LOW){
+                Log.d("battery", "Battery LOW");
+            }else if(intent.getAction()==Intent.ACTION_BATTERY_OKAY){
+                Log.d("battery", "Battery OKAY");
+            }else{
+                Log.d("battery", "No intent matched intent was: "+intent.getType());
+            }
+
+        }
     }
 }
